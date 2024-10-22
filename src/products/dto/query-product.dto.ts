@@ -16,4 +16,7 @@ export class ProductDTO {
 
   @Field({ nullable: true })
   totalsales?: number;
+
+  @Field({ nullable: true })
+  totalsoldproducts?: number;
 }

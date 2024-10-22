@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { OrdersService } from '../service/orders.service';
 import { Order } from '../entity/order.entity';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
@@ -33,9 +33,13 @@ export class OrdersResolver {
   @UseGuards(AuthGuard)
   @Mutation(() => OrderDTO)
   @ApiResponse({ status: 201, description: 'Order created successfully.' })
-  async placeOrder(@Args('input') input: CreateOrderInput): Promise<OrderDTO> {
+  async placeOrder(
+    @Args('input') input: CreateOrderInput,
+    @Context() context: any,
+  ): Promise<OrderDTO> {
+    const userId = context.req.user_id;
     const order = await this.ordersService.create(
-      input.userId,
+      userId,
       input.productId,
       input.quantity,
     );

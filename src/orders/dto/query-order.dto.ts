@@ -1,5 +1,5 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-
+import { ProductDTO } from '../../products/dto/query-product.dto';
 @ObjectType()
 export class OrderDTO {
   @Field()
@@ -19,4 +19,8 @@ export class OrderDTO {
 
   @Field()
   status?: string;
+
+  @Field(() => ProductDTO, { nullable: true })
+  product?: ProductDTO;
+
 }

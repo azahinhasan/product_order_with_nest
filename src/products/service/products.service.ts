@@ -40,7 +40,8 @@ export class ProductsService {
     const query = `
       SELECT 
         category,
-        COALESCE(SUM(price), 0) AS totalsales
+        COALESCE(SUM(price), 0) AS totalsales,
+        COUNT(id) AS totalsoldproducts
       FROM "Products"
       GROUP BY category;
     `;

@@ -18,24 +18,30 @@ export class OrdersService {
 
   async findUsersWithOrders(): Promise<any[]> {
     const query = `
-    SELECT 
-      u.id AS id, 
-      u.name AS name,
-      u.username AS username, 
-      COUNT(o.id) AS ordercount,
-      JSON_AGG(
-        JSON_BUILD_OBJECT(
-          'id', o.id,
-          'productId',  o."productId",
-          'quantity', o.quantity,
-          'totalPrice', o."totalPrice"
-        )
-      ) AS orders
-    FROM "Users" u
-    LEFT JOIN "Orders" o ON o."userId" = u."id"
-    GROUP BY u.id
-    ORDER BY orderCount DESC;
-  `;
+            SELECT 
+              u.id AS id, 
+              u.name AS name,
+              u.username AS username, 
+              COUNT(o.id) AS ordercount,
+              JSON_AGG(
+                JSON_BUILD_OBJECT(
+                  'id', o.id,
+                  'quantity', o.quantity,
+                  'totalPrice', o."totalPrice",
+                  'product', JSON_BUILD_OBJECT(
+                    'id', p.id,
+                    'name', p.name,
+                    'category', p.category,
+                    'price', p.price
+                  )
+                )
+              ) AS orders
+            FROM "Users" u
+            LEFT JOIN "Orders" o ON o."userId" = u."id"
+            LEFT JOIN "Products" p ON o."productId" = p."id"
+            GROUP BY u.id
+            ORDER BY ordercount DESC;
+          `;
 
     const usersWithOrders = await this.orderModel.sequelize.query(query, {
       type: QueryTypes.SELECT,
