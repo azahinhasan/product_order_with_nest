@@ -10,17 +10,20 @@ import { OrdersModule } from './orders/orders.module';
 import { User } from './user/entities/user.entity';
 import { Product } from './products/entity/product.entity';
 import { Order } from './orders/entity/order.entity';
+import * as config from '../config/config.json';
 
 @Module({
   imports: [
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: process.env.DB_HOST || 'localhost', 
-      port: +process.env.DB_PORT || 5432, 
-      username: process.env.DB_USERNAME || 'postgres', 
-      password: process.env.DB_PASSWORD || '1234',
-      database: process.env.DB_DATABASE || 'product_order_database_by_zahin',
+      host: config.development.host,
+      port: config.development.port,
+      username: config.development.username,
+      password: config.development.password,
+      database: config.development.database,
       models: [User, Product, Order], 
+      autoLoadModels: true,
+      synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
