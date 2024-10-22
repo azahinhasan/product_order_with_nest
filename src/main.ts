@@ -12,6 +12,9 @@ async function bootstrap() {
   .setTitle('Nestjs API starter with GraphQL')
   .setDescription('Nestjs API description')
   .setVersion('1.0')
+  .addTag('auth')
+  .addTag('products')
+  .addTag('orders')
   .addBearerAuth()
   .build();
 

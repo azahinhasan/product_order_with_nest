@@ -17,4 +17,7 @@ export class Order extends Model<Order> {
 
   @Column
   totalPrice: number;
+
+  @Column
+  status: string;
 }
