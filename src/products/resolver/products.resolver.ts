@@ -3,7 +3,7 @@ import { ProductsService } from '../service/products.service';
 import { Product } from '../entity/product.entity';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { AuthGuard } from '../../guards/jwt-auth.guard';
 import { ProductDTO } from '../dto/query-product.dto';
 import { CreateProductInput } from '../dto/create-product.dto';
 import {
@@ -16,7 +16,7 @@ import {
 export class ProductsResolver {
   constructor(private readonly productsService: ProductsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Query(() => ResponseWithPaginationInfoProduct)
   async getProducts(
     @Args('pagination', { type: () => Pagination, nullable: true })
@@ -34,13 +34,13 @@ export class ProductsResolver {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Query(() => [ProductDTO])
   async getTotalSalesByCategory(): Promise<any[]> {
     return this.productsService.getTotalSalesByCategory();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Mutation(() => ProductDTO)
   @ApiResponse({ status: 201, description: 'Product added successfully.' })
   async addProduct(
@@ -59,7 +59,7 @@ export class ProductsResolver {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Mutation(() => ProductDTO)
   @ApiResponse({ status: 200, description: 'Product updated successfully.' })
   async updateProduct(
@@ -71,7 +71,7 @@ export class ProductsResolver {
     return this.productsService.update(id, name, price, category);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
   @ApiResponse({ status: 200, description: 'Product deleted successfully.' })
   async deleteProduct(@Args('id') id: number): Promise<boolean> {
