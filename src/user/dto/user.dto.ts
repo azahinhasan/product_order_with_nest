@@ -16,5 +16,5 @@ export class UserDTO {
   orders?: OrderDTO[];
 
   @Field({ nullable: true })
-  ordercount?: string; 
+  totalorders?: string; 
 }

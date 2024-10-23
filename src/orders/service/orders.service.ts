@@ -25,7 +25,7 @@ export class OrdersService {
         u.id AS id, 
         u.name AS name,
         u.username AS username, 
-        COUNT(o.id) AS ordercount,
+        COUNT(o.id) AS totalorders,
         JSON_AGG(
           JSON_BUILD_OBJECT(
             'id', o.id,
@@ -43,7 +43,7 @@ export class OrdersService {
       LEFT JOIN "Orders" o ON o."userId" = u."id"
       LEFT JOIN "Products" p ON o."productId" = p."id"
       GROUP BY u.id
-      ORDER BY ordercount DESC
+      ORDER BY totalorders DESC
       LIMIT ${limit} OFFSET ${offset};
     `;
   
@@ -79,12 +79,19 @@ export class OrdersService {
         u.id AS id, 
         u.name, 
         u.username, 
-        COUNT(o.id) AS ordercount
+        COUNT(o.id) AS totalorders
       FROM "Users" u
       LEFT JOIN "Orders" o ON o."userId" = u.id
       GROUP BY u.id
-      ORDER BY ordercount DESC
-      LIMIT 1;
+      HAVING COUNT(o.id) = (
+        SELECT MAX(sub.totalorders) FROM (
+          SELECT COUNT(o.id) AS totalorders
+          FROM "Users" u
+          LEFT JOIN "Orders" o ON o."userId" = u.id
+          GROUP BY u.id
+        ) sub
+      )
+      ORDER BY totalorders DESC;
     `;
 
     const topUser = await this.orderModel.sequelize.query(query, {

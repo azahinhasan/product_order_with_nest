@@ -8,8 +8,6 @@ This project is a GraphQL-based API that allows users to interact with authentic
 3. [GraphQL Usage](#graphql-usage)
     - [Mutations](#mutations)
     - [Queries](#queries)
-4. [Authentication](#authentication)
-5. [License](#license)
 
 
 ## Teconology
@@ -46,7 +44,7 @@ This project is a GraphQL-based API that allows users to interact with authentic
     ```bash
     npm run start:dev
     ```
-5. Navigate to the GraphQL playground at `http://localhost:5212/graphql` (or your configured port) and do post request.
+5. Navigate to the GraphQL playground at `http://localhost:5212/graphql` (or given APP_PORT) and do post from client(such as: Postman).
 
 ## GraphQL Usage
 
@@ -68,9 +66,10 @@ mutation {
   login(username: "testUser", password: "password123")
 }
 
-[⭕ ps: use this token for authentication. Send it into headers such as: Authorization: Bearer token]
+<!-- [⭕ ps: use this token for authentication. Send it into headers for upcoming requets such as: Authorization: Bearer token] -->
 
 # ProductsResolver: Add Product Mutation
+# Note: add product 2 more more then that for next test setps
 mutation {
   addProduct(input: { name: "New Product", price: 99, category: "Electronics" }) {
     id
@@ -140,6 +139,7 @@ query {
       id
       username
       name
+      totalorders
       orders {
         id
         quantity
@@ -159,6 +159,7 @@ query {
     id
     username
     name
+    totalorders
   }
 }
 
