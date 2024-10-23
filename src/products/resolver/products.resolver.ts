@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ProductsService } from '../service/products.service';
 import { Product } from '../entity/product.entity';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse,ApiOperation,ApiBearerAuth } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guards/jwt-auth.guard';
 import { ProductDTO } from '../dto/query-product.dto';
@@ -16,8 +16,13 @@ import {
 export class ProductsResolver {
   constructor(private readonly productsService: ProductsService) {}
 
+
+  /*---------------------------------------- Query ---------------------------------------- */
   @UseGuards(AuthGuard)
   @Query(() => ResponseWithPaginationInfoProduct)
+  @ApiResponse({ status: 201, description: 'Will return all products with pagination info' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get all product with pagination' })
   async getProducts(
     @Args('pagination', { type: () => Pagination, nullable: true })
     pagination: Pagination,
@@ -34,15 +39,23 @@ export class ProductsResolver {
     };
   }
 
+  
   @UseGuards(AuthGuard)
   @Query(() => [ProductDTO])
+  @ApiResponse({ status: 201, description: 'Will return total sales and total sold products quantities by category' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get total sales by category' })
   async getTotalSalesByCategory(): Promise<any[]> {
     return this.productsService.getTotalSalesByCategory();
   }
 
+
+  /*---------------------------------------- Mutations ---------------------------------------- */
   @UseGuards(AuthGuard)
   @Mutation(() => ProductDTO)
-  @ApiResponse({ status: 201, description: 'Product added successfully.' })
+  @ApiResponse({ status: 201, description: 'Product created successfully' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Add new product' })
   async addProduct(
     @Args('input') input: CreateProductInput,
   ): Promise<ProductDTO> {
@@ -61,6 +74,7 @@ export class ProductsResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(() => ProductDTO)
+  @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Product updated successfully.' })
   async updateProduct(
     @Args('id') id: number,
@@ -73,6 +87,8 @@ export class ProductsResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
+  @ApiOperation({ summary: 'Delete product' })
+  @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Product deleted successfully.' })
   async deleteProduct(@Args('id') id: number): Promise<boolean> {
     return this.productsService.delete(id);

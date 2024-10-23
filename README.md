@@ -1,9 +1,9 @@
-# GraphQL API Documentation
+# Application Documentation
 
 This project is a GraphQL-based API that allows users to interact with authentication, orders, and products. The API includes features for user registration, login, managing orders, and managing products.
 
 ## Table of Contents
-1. [Getting Started](#getting-started)
+1. [Teconology](#teconology)
 2. [Installation](#installation)
 3. [GraphQL Usage](#graphql-usage)
     - [Mutations](#mutations)
@@ -11,9 +11,13 @@ This project is a GraphQL-based API that allows users to interact with authentic
 4. [Authentication](#authentication)
 5. [License](#license)
 
-## Getting Started
 
-To use this GraphQL API, you will need to have a basic understanding of GraphQL and how to send GraphQL requests using a client such as [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/testing/graphql-playground/) or [Postman](https://learning.postman.com/docs/sending-requests/supported-api-frameworks/graphql/).
+## Teconology
+  - Nest JS
+  - GraphQL
+  - Sequelize ORM
+  - Typescript
+  - JWT
 
 ## Installation
 
@@ -25,11 +29,18 @@ To use this GraphQL API, you will need to have a basic understanding of GraphQL 
     ```bash
     npm install
     ```
-3. Start the server:
+3. Setup Database
+  - Create a PostgreSQL database.
+  - Modify the info from `config/config.json` according to your db configuration.
+  - Run following commands to cerate tables
+     ```bash
+    npm run migrate
+    ```
+4. Start the server:
     ```bash
     npm run start
     ```
-4. Navigate to the GraphQL playground at `http://localhost:3000/graphql` (or your configured port).
+5. Navigate to the GraphQL playground at `http://localhost:5212/graphql` (or your configured port) and do post request.
 
 ## GraphQL Usage
 
@@ -99,6 +110,7 @@ mutation {
 
 ```
 ### Queries
+Below are some example queries that can be used with this API.
 
 ```graphql
 # OrdersResolver: Get User Orders Query

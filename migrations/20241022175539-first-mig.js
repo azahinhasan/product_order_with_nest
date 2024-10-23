@@ -47,7 +47,7 @@ module.exports = {
         allowNull: false,
       },
       price: {
-        type: Sequelize.FLOAT, // Use FLOAT for price
+        type: Sequelize.INTEGER, // Use INTEGER for price
         allowNull: false,
       },
       category: {
@@ -98,7 +98,7 @@ module.exports = {
         allowNull: false,
       },
       totalPrice: {
-        type: Sequelize.FLOAT, // Use FLOAT for total price
+        type: Sequelize.INTEGER, // Use INTEGER for total price
         allowNull: false,
       },
       status: {

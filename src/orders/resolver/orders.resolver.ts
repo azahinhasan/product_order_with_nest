@@ -1,38 +1,62 @@
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { OrdersService } from '../service/orders.service';
 import { Order } from '../entity/order.entity';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guards/jwt-auth.guard';
 import { OrderDTO } from '../dto/query-order.dto';
 import { CreateOrderInput } from '../dto/create-order.dto';
 import { UserDTO } from '../../user/dto/user.dto';
+
 @ApiTags('orders')
 @Resolver(() => OrderDTO)
 export class OrdersResolver {
   constructor(private readonly ordersService: OrdersService) {}
 
+
+  /*---------------------------------------- Query ---------------------------------------- */
+
   @UseGuards(AuthGuard)
   @Query(() => [OrderDTO])
+  @ApiResponse({ status: 201, description: 'Will return a list of orders.' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get Order by User ID' })
   async getUserOrders(@Args('userId') userId: number): Promise<OrderDTO[]> {
     return this.ordersService.findByUserId(userId);
   }
 
   @UseGuards(AuthGuard)
   @Query(() => [UserDTO])
+  @ApiResponse({ status: 201, description: 'Will return a list of users with their orders and products info.' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get Users with Orders' })
   async getUsersWithOrders(): Promise<UserDTO[]> {
     return this.ordersService.findUsersWithOrders();
   }
 
+
   @UseGuards(AuthGuard)
   @Query(() => [UserDTO])
+  @ApiResponse({ status: 201, description: 'Will return the user who has the most orders.' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get User with Most Orders' })
   async getTopUsersByOrderCount(): Promise<UserDTO> {
     return this.ordersService.findTopUsersByOrderCount();
   }
 
+
+  /*---------------------------------------- Mutations ---------------------------------------- */
+
   @UseGuards(AuthGuard)
   @Mutation(() => OrderDTO)
   @ApiResponse({ status: 201, description: 'Order created successfully.' })
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create an order.' })
   async placeOrder(
     @Args('input') input: CreateOrderInput,
     @Context() context: any,
@@ -54,6 +78,7 @@ export class OrdersResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(() => Boolean)
+  @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Order canceled successfully.' })
   async cancelOrder(@Args('orderId') orderId: number): Promise<boolean> {
     return this.ordersService.cancel(orderId);
