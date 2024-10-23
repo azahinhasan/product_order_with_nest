@@ -10,8 +10,12 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guards/jwt-auth.guard';
 import { OrderDTO } from '../dto/query-order.dto';
-import { CreateOrderInput } from '../dto/create-order.dto';
+import { CreateOrderInput } from '../dto/mutation-order.dto';
 import { UserDTO } from '../../user/dto/user.dto';
+import {
+  Pagination,
+  ResponseWithPaginationInfoUser,
+} from 'src/shared/pagination.dto';
 
 @ApiTags('orders')
 @Resolver(() => OrderDTO)
@@ -31,14 +35,25 @@ export class OrdersResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(() => [UserDTO])
+  @Query(() => ResponseWithPaginationInfoUser)
   @ApiResponse({ status: 201, description: 'Will return a list of users with their orders and products info.' })
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get Users with Orders' })
-  async getUsersWithOrders(): Promise<UserDTO[]> {
-    return this.ordersService.findUsersWithOrders();
+  async getUsersWithOrders(
+    @Args('pagination', { type: () => Pagination, nullable: true })
+    pagination: Pagination,
+  ): Promise<ResponseWithPaginationInfoUser> {
+    const { page, limit } = pagination;
+  
+    const result = await this.ordersService.findUsersWithOrders(page, limit);
+  
+    return {
+      totalCount: result.totalCount,
+      totalPages: result.totalPages,
+      currentPage: result.currentPage,
+      data: result.data,
+    };
   }
-
 
   @UseGuards(AuthGuard)
   @Query(() => [UserDTO])
