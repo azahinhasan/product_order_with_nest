@@ -33,7 +33,7 @@ This project is a GraphQL-based API that allows users to interact with authentic
     ```
 3. Setup Database
   - Create a PostgreSQL database.
-  - Modify the info from `config/config.json` according to your db configuration.
+  - Create a `.env` file and provide all info.For reference check `.env.example`.
   - Run following commands to cerate tables with indexing
      ```bash
     npm run migrate
@@ -68,7 +68,7 @@ mutation {
   login(username: "testUser", password: "password123")
 }
 
-[⭕ ps: use token for authentication. Send it into headers such as: Authorization: Bearer token]
+[⭕ ps: use this token for authentication. Send it into headers such as: Authorization: Bearer token]
 
 # ProductsResolver: Add Product Mutation
 mutation {
@@ -132,18 +132,23 @@ query {
 
 # OrdersResolver: Get Users with Orders Query
 query {
-  getUsersWithOrders {
-    id
-    username
-    name
-     orders{
-        id,
-        quantity,
-        totalPrice,
-        product{
-            name,
-            price
+  getUsersWithOrders(pagination: { page: 1, limit: 10 }) {
+    totalCount
+    totalPages
+    currentPage
+    data {
+      id
+      username
+      name
+      orders {
+        id
+        quantity
+        totalPrice
+        product {
+          name
+          price
         }
+      }
     }
   }
 }

@@ -3,6 +3,8 @@ import { AuthService } from './service/auth.service';
 import { AuthResolver } from './resolver/auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from '../guards/jwt-auth.guard';
+import * as dotenv from 'dotenv';
+dotenv.config();
 @Module({
   imports: [
     JwtModule.register({

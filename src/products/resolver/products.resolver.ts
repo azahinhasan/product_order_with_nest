@@ -5,7 +5,7 @@ import { ApiTags, ApiResponse,ApiOperation,ApiBearerAuth } from '@nestjs/swagger
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../guards/jwt-auth.guard';
 import { ProductDTO } from '../dto/query-product.dto';
-import { CreateProductInput } from '../dto/create-product.dto';
+import { CreateProductInput } from '../dto/mutation-product.dto';
 import {
   Pagination,
   ResponseWithPaginationInfoProduct,
