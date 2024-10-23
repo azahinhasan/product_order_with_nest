@@ -25,7 +25,7 @@ This project is a GraphQL-based API that allows users to interact with authentic
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/yourrepository.git
+    git clone https://github.com/azahinhasan/product_order_with_nest.git
     ```
 2. Install the dependencies:
     ```bash
