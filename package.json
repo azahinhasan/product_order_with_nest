@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate": "npx sequelize-cli db:migrate",
+    "create-config": "node createConfig.js",
+    "migrate": "npm run create-config && npx sequelize-cli db:migrate",
     "migrate:undo": "npx sequelize-cli db:migrate:undo",
     "seed": "npx sequelize-cli db:seed:all"
   },
@@ -39,6 +40,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "faker": "^6.6.6",
+    "fs": "^0.0.1-security",
     "graphql": "^16.9.0",
     "graphql-tools": "^9.0.2",
     "passport": "^0.7.0",

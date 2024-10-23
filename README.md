@@ -33,7 +33,7 @@ This project is a GraphQL-based API that allows users to interact with authentic
     ```
 3. Setup Database
   - Create a PostgreSQL database.
-  - Create a `.env` file and provide all info.For reference check `.env.example`.
+  - Create a `.env` file and provide all info. For reference check `.env.example`.
   - Run following commands to cerate tables with indexing
      ```bash
     npm run migrate
@@ -44,7 +44,7 @@ This project is a GraphQL-based API that allows users to interact with authentic
     ```
 4. Start the server:
     ```bash
-    npm run start
+    npm run start:dev
     ```
 5. Navigate to the GraphQL playground at `http://localhost:5212/graphql` (or your configured port) and do post request.
 

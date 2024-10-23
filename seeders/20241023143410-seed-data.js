@@ -18,15 +18,15 @@ module.exports = {
         updatedAt: new Date(),
       });
 
-      if (users.length - 1 === userBatchSize) {
+      if (users.length === userBatchSize) {
         await queryInterface.bulkInsert('Users', users);
         users.length = 0;
       }
     }
 
-    // if (users.length > 0) {
-    //   await queryInterface.bulkInsert('Users', users);
-    // }
+    if (users.length > 0) {
+      await queryInterface.bulkInsert('Users', users);
+    }
 
     const products = [];
     for (let i = 0; i < 100000; i++) {
@@ -38,15 +38,15 @@ module.exports = {
         updatedAt: new Date(),
       });
 
-      if (products.length - 1 === productBatchSize) {
+      if (products.length === productBatchSize) {
         await queryInterface.bulkInsert('Products', products);
         products.length = 0;
       }
     }
 
-    // if (products.length > 0) {
-    //   await queryInterface.bulkInsert('Products', products);
-    // }
+    if (products.length > 0) {
+      await queryInterface.bulkInsert('Products', products);
+    }
 
     const orders = [];
     for (let i = 0; i < 100000; i++) {
@@ -60,15 +60,15 @@ module.exports = {
         updatedAt: new Date(),
       });
 
-      if (orders.length - 1 === orderBatchSize) {
+      if (orders.length === orderBatchSize) {
         await queryInterface.bulkInsert('Orders', orders);
         orders.length = 0;
       }
     }
 
-    // if (orders.length > 0) {
-    //   await queryInterface.bulkInsert('Orders', orders);
-    // }
+    if (orders.length > 0) {
+      await queryInterface.bulkInsert('Orders', orders);
+    }
   },
 
   down: async (queryInterface, Sequelize) => {
