@@ -3,128 +3,162 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Create users table
-    await queryInterface.createTable('users', {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      username: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true, // Assuming usernames should be unique
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.fn('now'), // Default to current timestamp
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.fn('now'), // Default to current timestamp
-      },
-    });
-
-    // Create products table
-    await queryInterface.createTable('products', {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      price: {
-        type: Sequelize.INTEGER, // Use INTEGER for price
-        allowNull: false,
-      },
-      category: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.fn('now'), // Default to current timestamp
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.fn('now'), // Default to current timestamp
-      },
-    });
-
-    // Create orders table
-    await queryInterface.createTable('orders', {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'users', // Reference the users table
-          key: 'id',
+    await queryInterface.createTable(
+      'Users',
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
         },
-        onUpdate: 'CASCADE', // Update userId on user update
-        onDelete: 'CASCADE', // Delete orders when user is deleted
-      },
-      productId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'products', // Reference the products table
-          key: 'id',
+        username: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          unique: true,
         },
-        onUpdate: 'CASCADE', // Update productId on product update
-        onDelete: 'CASCADE', // Delete orders when product is deleted
+        password: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        name: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
       },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+      {
+        indexes: [
+          {
+            unique: true,
+            fields: ['username'],
+          },
+        ],
       },
-      totalPrice: {
-        type: Sequelize.INTEGER, // Use INTEGER for total price
-        allowNull: false,
+    );
+
+    await queryInterface.createTable(
+      'Products',
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        name: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        price: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        category: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
       },
-      status: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        defaultValue: 'pending', // Default status
+      {
+        indexes: [
+          {
+            fields: ['category'],
+          },
+          {
+            fields: ['name'],
+          },
+        ],
       },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.fn('now'), // Default to current timestamp
+    );
+
+    await queryInterface.createTable(
+      'Orders',
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        userId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Users',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+        productId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Products',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+        quantity: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        totalPrice: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        status: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          defaultValue: 'pending',
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
       },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.fn('now'), // Default to current timestamp
+      {
+        indexes: [
+          {
+            fields: ['userId'],
+          },
+          {
+            fields: ['productId'],
+          },
+          {
+            fields: ['status'],
+          },
+        ],
       },
-    });
+    );
   },
 
   async down(queryInterface, Sequelize) {
-    // Drop orders table first due to foreign key constraints
-    await queryInterface.dropTable('orders');
-    // Drop products table
-    await queryInterface.dropTable('products');
-    // Drop users table
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Orders');
+    await queryInterface.dropTable('Products');
+    await queryInterface.dropTable('Users');
   },
 };

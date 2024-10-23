@@ -13,11 +13,13 @@ This project is a GraphQL-based API that allows users to interact with authentic
 
 
 ## Teconology
-  - Nest JS
+  - Node 20
+  - Nest JS 10
   - GraphQL
   - Sequelize ORM
   - Typescript
   - JWT
+  - PostgreSQL 16
 
 ## Installation
 
@@ -32,9 +34,13 @@ This project is a GraphQL-based API that allows users to interact with authentic
 3. Setup Database
   - Create a PostgreSQL database.
   - Modify the info from `config/config.json` according to your db configuration.
-  - Run following commands to cerate tables
+  - Run following commands to cerate tables with indexing
      ```bash
     npm run migrate
+    ```
+  - [Optional] Seed 0.1 milion data into table run this
+    ```bash
+    npm run seed
     ```
 4. Start the server:
     ```bash
