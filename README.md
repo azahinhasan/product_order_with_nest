@@ -32,7 +32,8 @@ This project is a GraphQL-based API that allows users to interact with authentic
 3. Setup Database
   - Create a PostgreSQL database.
   - Create a `.env` file and provide all info. For reference check `.env.example`.
-  - Run following commands to cerate tables with indexing
+  - Run following commands to cerate tables with indexing <br/>
+    `Note: intall sequelize-cli on the system if it's not.`
      ```bash
     npm run migrate
     ```
